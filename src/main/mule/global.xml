@@ -11,8 +11,8 @@ http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mu
 http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd">
 	 <global-property doc:name="Global Property" doc:id="31011cfd-4c1b-45c4-8b08-2d06250593dc" name="environment" value="local" />
 	 <global-property doc:name="Global Property" doc:id="203ca85b-7c98-409d-8314-9ad9d7116c09" name="muleKey" value="mulesoft" />
-	 <configuration-properties doc:name="Configuration properties" doc:id="5aa70af5-4e23-4e6b-8221-272ece9011e1" file="properties/config.yaml" />
-	 <configuration-properties doc:name="Configuration properties" doc:id="6f7ab4cd-4908-4a5c-b739-d74b10008d54" file="properties/config-${environment}.yaml" />
+	 <configuration-properties doc:name="commom-configuration-properties" doc:id="5aa70af5-4e23-4e6b-8221-272ece9011e1" file="properties/config.yaml" />
+	 <configuration-properties doc:name="env-configuration-properties" doc:id="6f7ab4cd-4908-4a5c-b739-d74b10008d54" file="properties/config-${environment}.yaml" />
 	
 	
 	 <secure-properties:config key="${muleKey}" file="properties/config-secure-${environment}.yaml" name="config-secure-properties">
