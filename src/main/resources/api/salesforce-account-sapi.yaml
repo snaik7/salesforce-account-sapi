@@ -1,0 +1,450 @@
+openapi: 3.0.0
+info:
+  version: v1
+  title: Salesforce Account System API
+  description: Resourses to interact with Salesforce accounts
+
+security:
+  - bearerAuth: []
+
+paths:
+  /accounts:
+    post:
+      tags:
+        - Accounts
+      summary: Resourse to handle accounts
+      description: Resourse to handle accounts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Accounts'
+      responses:
+        '201':
+          description: New accounts Created
+        '400':
+          $ref: '#/components/responses/400-Error'
+        '401':
+          $ref: '#/components/responses/401-Error'
+        '500':
+          $ref: '#/components/responses/500-Error'
+
+    get:
+      tags:
+        - Accounts
+      summary: Retrieves accounts based on received comma separated accountId
+      description: Retrieves accounts based on received comma separated accountId
+      parameters:
+        - in: query
+          name: accountId
+          description: List of Comma separated accountId
+          required: true
+          schema:
+           type: array
+           items:
+             type: string
+             minLength: 1
+      responses:
+        "200":
+          description: "Ok"
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/Accounts"
+                  - $ref: "#/components/schemas/EmptyArray"
+        '400':
+          $ref: '#/components/responses/400-Error'
+        '401':
+          $ref: '#/components/responses/401-Error'
+        '404':
+          $ref: '#/components/responses/404-Error'
+        '500':
+          $ref: '#/components/responses/500-Error'
+    delete:
+      tags:
+        - Accounts
+      summary: Delete accounts based on received comma separated accountId
+      description: Delete accounts based on received comma separated accountId
+      parameters:
+        - in: query
+          name: accountId
+          description: List of Comma separated accountId
+          required: true
+          schema:
+           type: array
+           items:
+             type: string
+             minLength: 1
+      responses:
+        '200':
+          description:  Accounts Deleted
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/Accounts"
+                  - $ref: "#/components/schemas/EmptyArray"
+        '400':
+          $ref: '#/components/responses/400-Error'
+        '401':
+          $ref: '#/components/responses/401-Error'
+        '404':
+          $ref: '#/components/responses/404-Error'
+        '500':
+          $ref: '#/components/responses/500-Error'
+    patch:
+      tags:
+        - Accounts
+      summary: Resourse to update accounts
+      description: Resourse to update accounts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Accounts'
+      responses:
+        '200':
+          description: New accounts Created
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/Accounts"
+                  - $ref: "#/components/schemas/EmptyArray"
+        '400':
+          $ref: '#/components/responses/400-Error'
+        '401':
+          $ref: '#/components/responses/401-Error'
+        '500':
+          $ref: '#/components/responses/500-Error'
+  
+  /accounts/search:
+    post:
+      tags:
+        - Accounts
+      summary: Search a account by accountId, email, first name, lastname and company name
+      description: Search a account by accountId, email, first name, lastname and company name
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountsSearch'
+
+      responses:
+        "200":
+          description: "Ok"
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/Accounts"
+                  - $ref: "#/components/schemas/EmptyArray"
+        '400':
+          $ref: '#/components/responses/400-Error'
+        '401':
+          $ref: '#/components/responses/401-Error'
+        '404':
+          $ref: '#/components/responses/404-Error'
+        '500':
+          $ref: '#/components/responses/500-Error'
+          
+  /accounts/{accountId}:
+    get:
+      tags:
+        - Accounts
+      summary: Get a account by accountId
+      parameters:
+        - in: path
+          name: accountId
+          schema:
+            type: string
+          required: true
+          description: Account Id of customer
+      responses:
+        "200":
+          description: "Ok"
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/Accounts"
+                  - $ref: "#/components/schemas/EmptyArray"
+        '400':
+          $ref: '#/components/responses/400-Error'
+        '401':
+          $ref: '#/components/responses/401-Error'
+        '404':
+          $ref: '#/components/responses/404-Error'
+        '500':
+          $ref: '#/components/responses/500-Error'
+    
+    delete:
+      tags:
+        - Accounts
+      summary: Delete a account by accountId
+      parameters:
+        - in: path
+          name: accountId
+          schema:
+            type: string
+          required: true
+          description: Account Id of customer
+      responses:
+        "204":
+          description: "No Content"
+        '400':
+          $ref: '#/components/responses/400-Error'
+        '401':
+          $ref: '#/components/responses/401-Error'
+        '404':
+          $ref: '#/components/responses/404-Error'
+        '500':
+          $ref: '#/components/responses/500-Error'
+          
+components:
+  
+  schemas:
+    Accounts:
+      type: array
+      items:
+        oneOf:
+         - $ref: "#/components/schemas/Individual"
+         - $ref: "#/components/schemas/Business"
+         
+    EmptyArray:
+      type: array
+      items:
+        type: string
+      maxItems: 0
+
+    AccountsSearch:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          pattern: "^[A-Z,a-z,0-9]+$"
+          minLength: 1
+          maxLength: 18
+        firstName:
+          type: string
+          pattern: "^[A-Z,a-z]+$"
+          minLength: 1
+          maxLength: 50
+        lastName:
+          type: string
+          pattern: "^[A-Z,a-z]+$"
+          minLength: 1
+          maxLength: 50
+        email:
+          type: string
+        companyName:
+          type: string
+          pattern: "^[A-Z,a-z]+$"
+          minLength: 1
+          maxLength: 50
+
+       
+    Individual:
+      type: object
+      additionalProperties: false
+      required: [firstName, lastName, email, address]
+      properties:
+        id:
+          type: string
+          pattern: "^[A-Z,a-z,0-9]+$"
+          minLength: 1
+          maxLength: 18
+        firstName:
+          type: string
+          pattern: "^[A-Z,a-z]+$"
+          minLength: 1
+          maxLength: 50
+        lastName:
+          type: string
+          pattern: "^[A-Z,a-z]+$"
+          minLength: 1
+          maxLength: 50
+        email:
+          type: string
+        address:
+          type: array
+          items:
+            $ref: '#/components/schemas/Address'
+      
+        
+    Business:
+      type: object
+      additionalProperties: false
+      required: [companyName, email, address]
+      properties:
+        id:
+          type: string
+          pattern: "^[A-Z,a-z,0-9]+$"
+          minLength: 1
+          maxLength: 18
+        companyName:
+          type: string
+          pattern: "^[A-Z,a-z]+$"
+          minLength: 1
+          maxLength: 50
+        email:
+          type: string
+        address:
+          type: array
+          items:
+            $ref: '#/components/schemas/Address'
+    
+        
+    Address:
+      type: object
+      additionalProperties: false
+      properties:
+        addressType:
+          enum: ["billing", "shipping"]
+        addressLine1:
+          type: string
+        addressLine2:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        postalCode:
+          type: string
+        country:
+          type: string
+    
+    ErrorResponse:
+      description: "Error object definition"
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: "Success or Failure"
+        apiName:
+          type: string
+          description: "Name of the API"
+        version:
+          type: string
+          description: "Version of API"
+        correlationId:
+          type: string
+          description: "36 character unique id  generated in API or send from source"
+        timestamp:
+          type: string
+          description: "Timestamp of transaction"
+        error:
+          $ref: '#/components/schemas/ErrorDetails'
+          
+    ErrorDetails:
+      description: "List of Detailed Error Messages"
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        code:
+          type: string
+          description: "HTTP Code"
+          example: "400"
+        message:
+          type: string
+          description: "General Error Message"
+          
+    ErrorDetail:
+      description: "Error object definition"
+      type: object
+      properties:
+        domain:
+          type: string
+          description: "Domain of the API"
+        reason:
+          type: string
+          description: "Reason of error"
+        message:
+          type: string
+          description: "Error message"
+  
+  responses:
+    400-Error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example: 
+            success: false
+            apiName: salesforce-account-sapi
+            version: "1.0.0"
+            correlationId: c109a5e0-6aa0-11ed-bf43-147dda49b3f6
+            timestamp: 2022-11-22T12:03:38.443-08:00
+            error: 
+              errors: 
+                - 
+                  domain: "global"
+                  message: "Bad request was sent to the endpoint"
+                  reason: "Invalid Parameter"
+              code: "400"
+              message: "Bad request was sent to the endpoint"
+    401-Error:
+      description: Unauthorized, Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example: 
+            success: false
+            apiName: salesforce-account-sapi
+            version: "1.0.0"
+            correlationId: 1f39e5f6-aa4c-424d-81e6-ceb6f8e4eddd 
+            timestamp: 2022-11-22T12:03:38.443-08:00
+            error: 
+              code: "401"
+              message: "Unauthorized"
+    404-Error:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example: 
+            success: false
+            apiName: salesforce-account-sapi
+            version: "1.0.0"
+            correlationId: b53efa02-3a9f-40dd-abc2-893763bb204f
+            timestamp: 2022-11-22T12:31:38.443-08:00
+            error: 
+              errors: []
+              code: "404"
+              message: "Record Not Found"
+    500-Error:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example: 
+            success: false
+            apiName: salesforce-account-sapi
+            version: "1.0.0"
+            correlationId: b53efa02-3a9f-40dd-abc2-893763bb204f
+            timestamp: 2022-11-22T12:31:38.443-08:00
+            error: 
+              errors:
+                - 
+                  domain: "global"
+                  message: "Unable to connect to the Salesforce"
+                  reason: "Connection Timeout"
+              code: "500"
+              message: "Internal Server Error"
+    
+  securitySchemes:
+    bearerAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: JWT Authorization header using the Bearer scheme.    
+

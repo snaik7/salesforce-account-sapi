@@ -1,0 +1,25 @@
+http:
+  listener:
+    protocol: "HTTP"
+    port: "8081"
+    host: "0.0.0.0"
+    basePath: "/api/*"
+    readTimeout: "30000"
+    
+salesforce:
+  username: "naiksantosh-bxug@force.com"
+  password: "Mphasis7$"
+  securityToken: "EY0R4ySwoY5wwebBYUgkOx9QA"
+  getFields: ["Name","Type","ShippingAddress","BillingAddress","Email__c"]
+  getDisplayFields: ["Id","Name","Type","ShippingAddress","BillingAddress","Email__c"]
+  deleteDisplayFields: ["id","success"]
+  searchQuery: "SELECT Id, Name, Type, ShippingAddress, BillingAddress, Email__c FROM Account WHERE "
+  untilSuccessful:
+    retries: "1" 
+    ms: "5000" 
+    
+autodiscovery:
+  id: "18315934"
+  
+
+  

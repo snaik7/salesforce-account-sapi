@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	<error-handler name="apikit-error-handler">
+		<on-error-propagate
+			type="APIKIT:BAD_REQUEST,ACCOUNT:BAD_REQUEST"
+			enableNotifications="true" logException="true">
+			<ee:transform doc:id="4856d057-07b6-458b-811a-5dc23f4bfecb" doc:name="Return 400">
+				<ee:message>
+					<ee:set-payload resource="dataweave/error-response-bad-request.dwl" />
+				</ee:message>
+				<ee:variables>
+					<ee:set-variable variableName="httpStatus"><![CDATA[400]]></ee:set-variable>
+					<ee:set-variable resource="dataweave/http-reason-phrase.dwl" variableName="httpReasonPhrase" />
+				</ee:variables>
+			</ee:transform>
+		</on-error-propagate>
+		<on-error-propagate
+			type="APIKIT:NOT_FOUND"
+			enableNotifications="true" logException="true">
+			<ee:transform doc:name="Return 404">
+				<ee:message>
+					<ee:set-payload
+						resource="dataweave/error-response-not-found.dwl" />
+				</ee:message>
+				<ee:variables>
+					<ee:set-variable variableName="httpStatus"><![CDATA[404]]></ee:set-variable>
+					<ee:set-variable resource="dataweave/http-reason-phrase.dwl" variableName="httpReasonPhrase" />
+				</ee:variables>
+			</ee:transform>
+		</on-error-propagate>
+		<on-error-propagate
+			type="APIKIT:METHOD_NOT_ALLOWED">
+			<ee:transform doc:name="Return 405">
+				<ee:message>
+					<ee:set-payload
+						resource="dataweave/error-response-method-not-allowed.dwl" />
+				</ee:message>
+				<ee:variables>
+					<ee:set-variable variableName="httpStatus"><![CDATA[405]]></ee:set-variable>
+					<ee:set-variable resource="dataweave/http-reason-phrase.dwl" variableName="httpReasonPhrase" />
+				</ee:variables>
+			</ee:transform>
+		</on-error-propagate>
+		<on-error-propagate type="APIKIT:NOT_ACCEPTABLE">
+			<ee:transform doc:name="Return 406">
+				<ee:message>
+					<ee:set-payload
+						resource="dataweave/error-response-not-acceptable.dwl" />
+				</ee:message>
+				<ee:variables>
+					<ee:set-variable variableName="httpStatus"><![CDATA[406]]></ee:set-variable>
+					<ee:set-variable resource="dataweave/http-reason-phrase.dwl" variableName="httpReasonPhrase" />
+				</ee:variables>
+			</ee:transform>
+		</on-error-propagate>
+		<on-error-propagate
+			type="APIKIT:UNSUPPORTED_MEDIA_TYPE">
+			<ee:transform doc:name="Return 415">
+				<ee:message>
+					<ee:set-payload
+						resource="dataweave/error-response-unsupported-media-type.dwl" />
+				</ee:message>
+				<ee:variables>
+					<ee:set-variable variableName="httpStatus"><![CDATA[415]]></ee:set-variable>
+					<ee:set-variable resource="dataweave/http-reason-phrase.dwl" variableName="httpReasonPhrase" />
+				</ee:variables>
+			</ee:transform>
+		</on-error-propagate>
+		<on-error-propagate type="APIKIT:NOT_IMPLEMENTED">
+			<ee:transform doc:name="Return 501">
+				<ee:message>
+					<ee:set-payload
+						resource="dataweave/error-response-not-implemented.dwl" />
+				</ee:message>
+				<ee:variables>
+					<ee:set-variable variableName="httpStatus"><![CDATA[501]]></ee:set-variable>
+					<ee:set-variable resource="dataweave/http-reason-phrase.dwl" variableName="httpReasonPhrase" />
+				</ee:variables>
+			</ee:transform>
+		</on-error-propagate>
+		<on-error-propagate type="ANY" enableNotifications="true" logException="true">
+			<ee:transform doc:name="Return 500" doc:id="add3c8ee-e59e-4786-9a0c-6011842110f9">
+				<ee:message>
+					<ee:set-payload resource="dataweave/error-response-any.dwl" />
+				</ee:message>
+				<ee:variables>
+					<ee:set-variable variableName="httpStatus"><![CDATA[500]]></ee:set-variable>
+					<ee:set-variable resource="dataweave/http-reason-phrase.dwl" variableName="httpReasonPhrase" />
+				</ee:variables>
+			</ee:transform>
+		</on-error-propagate>
+	</error-handler>
+</mule>

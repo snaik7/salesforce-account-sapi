@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd">
+	
+	
+	   <flow name="salesforce-account-sapi-main">
+        <http:listener config-ref="main-http-listener" path="${http.listener.basePath}">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]" reasonPhrase='#[vars.httpReasonPhrase default ""]'>
+                <http:body><![CDATA[#[payload]]]></http:body>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:router config-ref="salesforce-account-sapi-config" />
+		<error-handler ref="apikit-error-handler"/>
+    </flow>
+        <flow name="get:\healthcheck:salesforce-account-sapi-config">
+        <ee:transform doc:name="Health Check Response">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  message: "Ok"
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+	<flow name="post:\accounts:salesforce-account-sapi-config" doc:id="2a8be8f2-dd0b-4988-a222-5b3c67caf669">
+        <flow-ref doc:name="post-accounts" doc:id="fd1f02ab-a27e-4a24-b1fd-6da46a63925a" name="post-patch-accounts" />
+    </flow>
+    <flow name="post:\accounts\search:salesforce-account-sapi-config" doc:id="d82b3361-bc66-4ca6-ab4d-cea47a8a137d">
+        <flow-ref doc:name="post-accounts-search" doc:id="915689af-95ac-4303-8586-6cde32ee852b" name="post-accounts-search" />
+    </flow>
+    <flow name="patch:\accounts:salesforce-account-sapi-config" doc:id="ac017fbe-dd61-44f9-b573-635bb9e858bd">
+        <flow-ref doc:name="patch-accounts" doc:id="7fcf893c-308f-4b80-967d-710b2a2d37e5" name="post-patch-accounts" />
+    </flow>
+    <flow name="get:\accounts\(accountId):salesforce-account-sapi-config" doc:id="e78016dc-6627-46b1-8224-5c62b8ddbb52">
+        <flow-ref doc:name="get-accounts" doc:id="ee793d1c-72bc-4abe-b415-20e5890a5703" name="get-accounts" />
+    </flow>
+    <flow name="delete:\accounts\(accountId):salesforce-account-sapi-config" doc:id="54b5ee0c-05b2-4050-871f-a98c57b21297">
+        <flow-ref doc:name="delete-accounts" doc:id="3f0613af-80ea-4e76-9f59-e41467b69358" name="delete-accounts" />
+    </flow>
+     <flow name="get:\accounts:salesforce-account-sapi-config" doc:id="074a6fbc-7c02-4880-96b6-9d039bb7afb3">
+        <flow-ref doc:name="get-accounts" doc:id="2e84cb6c-4f66-4fa4-ad12-e2e8e955e741" name="get-accounts" />
+    </flow>
+     <flow name="delete:\accounts:salesforce-account-sapi-config" doc:id="edfbfb12-3966-45f7-b49e-e27ce95ad490">
+        <flow-ref doc:name="delete-accounts" doc:id="70100542-743a-4699-a317-c5e38605c090" name="delete-accounts" />
+    </flow>
+</mule>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="post-accounts-search" doc:id="a544842f-a57f-46bc-b6a4-8a11f9765bfd" >
+		<ee:transform doc:name="Validate Request" doc:id="4edaa46c-5f77-4099-b2b6-5be88c7d82e1">
+			<ee:message />
+			<ee:variables>
+				<ee:set-variable resource="dataweave/validate-search.dwl" variableName="validationError" />
+			</ee:variables>
+		</ee:transform>
+		<ee:transform doc:name="Accounts Search Request" doc:id="0a888152-405a-47c8-bec0-9ba544f48fb8" >
+			<ee:message >
+				<ee:set-payload resource="dataweave/search-accounts-request.dwl" />
+			</ee:message>
+		</ee:transform>
+		<choice doc:name="Validate Request ?" doc:id="2c797518-2999-4843-b48c-922b87be5c10" >
+			<when expression="#[isEmpty(vars.validationError) and sizeOf(vars.validationError) == 0]">
+		<until-successful maxRetries="${salesforce.untilSuccessful.retries}" doc:name="Until Successful" doc:id="d6a04651-55e9-4362-acc1-f7f9ad8e0f79" millisBetweenRetries="${salesforce.untilSuccessful.ms}">
+			<try doc:name="Try" doc:id="33a71917-dc58-4775-88d9-96e6cbd0dab9" >
+				<salesforce:query doc:name="Search Accounts" doc:id="709befd4-0c13-4c01-9c8e-2708b7bcef92" config-ref="salesforce-config">
+							<salesforce:salesforce-query ><![CDATA[#[payload]]]></salesforce:salesforce-query>
+						</salesforce:query>
+						<error-handler >
+					<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="54755e0e-4d3a-4cc2-8058-ffd525f23843" type="SALESFORCE:COMMUNICATION, SALESFORCE:CONNECTIVITY, SALESFORCE:TIMEOUT, SALESFORCE:UNAVAILABLE">
+								<logger level="ERROR" doc:name="Error" doc:id="e4a80007-d7b4-4a41-b0f0-e7b08b878433" message="correlationId=#[correlationId] -- Error is #[error.description]. Other details  #[error.errorType] #[error.exception]" />
+					</on-error-propagate>
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="afe813c4-56cc-42e3-9b54-4ce13541c22c" type="ANY">
+						<set-variable value="#[true]" doc:name="errorAny" doc:id="672c1cdd-de3d-44e9-be27-0dd2fae843e3" variableName="errorAny"/>
+						<logger level="ERROR" doc:name="Error" doc:id="89ec4646-b42b-47e0-8c42-3f92757e2779" message="correlationId=#[correlationId] -- Error is #[error.description]. Other details  #[error.errorType] #[error.exception]" />
+					</on-error-continue>
+				</error-handler>
+			</try>
+		</until-successful>
+		<choice doc:name="Error ?" doc:id="39e13273-a19e-48e6-a7fc-408b29912751" >
+			<when expression="#[vars.errorAny]">
+				<raise-error doc:name="ACCOUNT:SEARCH_ACCOUNT" doc:id="89151af8-301c-465c-9c3d-48f48a41bb16" type="ACCOUNT:SEARCH_ACCOUNT" description="#[p('errorMessage.searchAccount')]"/>
+			</when>
+		</choice>
+		<ee:transform doc:name="Accounts Search Response" doc:id="a0f13f9d-b40c-47a2-8c99-0179975d3c84" >
+			<ee:message >
+						<ee:set-payload resource="dataweave/accounts-response.dwl" />
+			</ee:message>
+		</ee:transform>
+		</when>
+			<otherwise >
+				<raise-error doc:name="ACCOUNT:BAD_REQUEST" doc:id="051970e8-f453-4746-8b7d-db33e7d28b09" type="ACCOUNT:BAD_REQUEST" description="#[vars.validationError[0]]"/>
+			</otherwise>
+		</choice>
+	</sub-flow>
+</mule>

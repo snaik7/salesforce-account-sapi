@@ -1,0 +1,12 @@
+api:
+  domain: "salesforce"
+  name: "salesforce-account-sapi"
+  version: "1.0.0"
+  
+errorMessage:
+  emptyPayload: "The request is empty"
+  individualBusinessInvalidSearch: "Individual and Business search can't be performed together"
+  deleteAccount: "Delete Account failed in Salesforce"
+  getAccount: "Get Account failed in Salesforce"
+  account: "Account operation failed in Salesforce"
+  searchAccount: "Search Account failed in Salesforce"

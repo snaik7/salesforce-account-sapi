@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="post-patch-accounts" doc:id="a544842f-a57f-46bc-b6a4-8a11f9765bfd" >
+		<ee:transform doc:name="Validate Request" doc:id="4edaa46c-5f77-4099-b2b6-5be88c7d82e1">
+			<ee:message />
+			<ee:variables>
+				<ee:set-variable resource="dataweave/validate-accounts.dwl" variableName="validationError" />
+			</ee:variables>
+		</ee:transform>
+		<choice doc:name="Validate Request ?" doc:id="2c797518-2999-4843-b48c-922b87be5c10" >
+			<when expression="#[isEmpty(vars.validationError) and sizeOf(vars.validationError) == 0]">
+			
+		<set-variable value="#[payload]" doc:name=" originalPayload" doc:id="48a1de44-ceca-4843-bcd2-2947caabbaac" variableName="originalPayload"/>
+		<ee:transform doc:name="Accounts Request" doc:id="b7d769c3-2e5e-41b9-8621-e4ce67402056" >
+			<ee:message >
+						<ee:set-payload resource="dataweave/post-patch-accounts-request.dwl" />
+			</ee:message>
+		</ee:transform>
+		<until-successful maxRetries="${salesforce.untilSuccessful.retries}" doc:name="Until Successful" doc:id="d6a04651-55e9-4362-acc1-f7f9ad8e0f79" millisBetweenRetries="${salesforce.untilSuccessful.ms}">
+			<try doc:name="Try" doc:id="33a71917-dc58-4775-88d9-96e6cbd0dab9" >
+				<choice doc:name="Request Type ? " doc:id="ca89c04c-6e15-4132-8187-dc36ace40b0a" >
+					<when expression='#[attributes["method"] == "POST"]'>
+						<salesforce:create type="Account" doc:name="Create Accounts" doc:id="dee8d18e-43cd-4694-a59c-e41a9bcc3129" config-ref="salesforce-config" />
+					</when>
+					<when expression='#[attributes["method"] == "PATCH"]'>
+						<salesforce:update type="Account" doc:name="Update Accounts" doc:id="22aea0b4-2215-4427-87b9-131e3abd0ecf" config-ref="salesforce-config" />
+					</when>
+				</choice>
+				<error-handler >
+					<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="54755e0e-4d3a-4cc2-8058-ffd525f23843" type="SALESFORCE:COMMUNICATION, SALESFORCE:CONNECTIVITY, SALESFORCE:TIMEOUT, SALESFORCE:UNAVAILABLE">
+								<logger level="ERROR" doc:name="Error" doc:id="d67630a0-8f64-4d40-8d1d-f5006f475f85" message="correlationId=#[correlationId] -- Error is #[error.description]. Other details  #[error.errorType] #[error.exception]" />
+					</on-error-propagate>
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="43c232b0-ea42-47da-af50-edd68ebcff9c" type="ANY">
+						<set-variable value="#[true]" doc:name="errorAny" doc:id="7da319ff-7250-4ad6-9a14-1f330cf95f62" variableName="errorAny"/>
+						<logger level="ERROR" doc:name="Error" doc:id="3448d480-5925-4777-aa18-63c52caffedb" message="correlationId=#[correlationId] -- Error is #[error.description]. Other details  #[error.errorType] #[error.exception]" />
+					</on-error-continue>
+				</error-handler>
+			</try>
+		</until-successful>
+			<choice doc:name="Error ?" doc:id="427a39a7-eea0-4403-a414-e1fb398f67be" >
+			<when expression="#[vars.errorAny]">
+				<raise-error doc:name="ACCOUNT:ACCOUNT_ERROR" doc:id="262be6c9-abd4-426f-9f89-b0e7b67649c9" type="ACCOUNT:ACCOUNT_ERROR" description="#[p('errorMessage.account')]"/>
+			</when>
+		</choice>
+		<ee:transform doc:name="Accounts Response" doc:id="a0f13f9d-b40c-47a2-8c99-0179975d3c84" >
+			<ee:message >
+						<ee:set-payload resource="dataweave/post-patch-accounts-response.dwl" />
+			</ee:message>
+		</ee:transform>
+		</when>
+			<otherwise >
+				<raise-error doc:name="ACCOUNT:BAD_REQUEST" doc:id="051970e8-f453-4746-8b7d-db33e7d28b09" type="ACCOUNT:BAD_REQUEST" description="#[p('errorMessage.emptyPayload')]"/>
+			</otherwise>
+		</choice>
+	</sub-flow>
+</mule>
