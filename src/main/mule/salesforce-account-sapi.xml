@@ -19,7 +19,27 @@ http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/m
                 <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
             </http:error-response>
         </http:listener>
-        <apikit:router config-ref="salesforce-account-sapi-config" />
+        <ee:transform doc:name="headerParams" doc:id="2cc87d3f-5c72-4cff-8952-a42a453bf847">
+			<ee:message />
+			<ee:variables>
+				<ee:set-variable variableName="headerParams"><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"x-correlation-id": attributes.headers["x-correlation-id"] default correlationId ,
+	"x-client-correlation-id" : attributes.headers["x-client-correlation-id"] default correlationId,
+	"x-client-name": attributes.headers["x-client-correlation-id"] default p('api.name'),
+	
+}]]></ee:set-variable>
+				<ee:set-variable variableName="auditMessage" ><![CDATA[%dw 2.0
+output application/json
+---
+"CorrelationId=" ++ correlationId ++ " " ++ attributes['method'] ++ ":/" ++ attributes['requestPath']]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<logger level="INFO" doc:name="Start" doc:id="9f94e189-d191-409b-ad30-1fa81f681808" message='#[vars.auditMessage ++ " Start"]'/>
+		<apikit:router config-ref="salesforce-account-sapi-config" />
+		<logger level="INFO" doc:name="End" doc:id="153a733f-d6bd-47cd-bf24-507fb53fbe1f" message='#[vars.auditMessage ++ " End"]'/>
 		<error-handler ref="apikit-error-handler"/>
     </flow>
         <flow name="get:\healthcheck:salesforce-account-sapi-config">

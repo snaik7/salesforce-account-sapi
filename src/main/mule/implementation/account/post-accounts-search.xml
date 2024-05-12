@@ -12,6 +12,26 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 				<ee:set-variable resource="dataweave/validate-search.dwl" variableName="validationError" />
 			</ee:variables>
 		</ee:transform>
+		<ee:transform doc:name="Pagination" doc:id="83f89d52-9605-4e06-8760-180d9dff881f">
+			<ee:message />
+			<ee:variables>
+				<ee:set-variable variableName="limit"><![CDATA[%dw 2.0
+var limit = p('limit') as Number
+output application/json
+---
+if (((attributes.queryParams.limit default limit) >= limit) or ((attributes.queryParams.limit default limit) <= 0))
+	limit
+else 
+	attributes.queryParams.limit default limit]]></ee:set-variable>
+				<ee:set-variable variableName="offset" ><![CDATA[%dw 2.0
+output application/json
+---
+if ((attributes.queryParams.offset default -1) < 0 ) 
+	0
+else 
+	attributes.queryParams.offset default 0]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
 		<ee:transform doc:name="Accounts Search Request" doc:id="0a888152-405a-47c8-bec0-9ba544f48fb8" >
 			<ee:message >
 				<ee:set-payload resource="dataweave/search-accounts-request.dwl" />
@@ -45,6 +65,11 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 						<ee:set-payload resource="dataweave/accounts-response.dwl" />
 			</ee:message>
 		</ee:transform>
+				<ee:transform doc:name="Pagination for Search Results" doc:id="862b0e2a-5160-463c-91c1-6586046c4607" >
+					<ee:message >
+						<ee:set-payload resource="dataweave/dataweave-accounts-pagination-response.dwl" />
+					</ee:message>
+				</ee:transform>
 		</when>
 			<otherwise >
 				<raise-error doc:name="ACCOUNT:BAD_REQUEST" doc:id="051970e8-f453-4746-8b7d-db33e7d28b09" type="ACCOUNT:BAD_REQUEST" description="#[vars.validationError[0]]"/>

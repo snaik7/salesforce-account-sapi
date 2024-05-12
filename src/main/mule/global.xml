@@ -23,8 +23,8 @@ http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/sc
 	  <http:listener-config name="main-http-listener" doc:name="HTTP Listener config" doc:id="84f5091b-b5e1-47f4-ba84-2df3a006051b" >
 		<http:listener-connection host="0.0.0.0" port="8081" />
 	</http:listener-config>
-	<salesforce:sfdc-config name="salesforce-config" doc:name="Salesforce Config" doc:id="b2d290cc-2227-4033-86a8-90fd2e693d00" >
-		<salesforce:basic-connection username="${secure::salesforce.username}" password="${secure::salesforce.password}" securityToken="${secure::salesforce.securityToken}" />
+	<salesforce:sfdc-config name="salesforce-config" doc:name="Salesforce Config" doc:id="b2d290cc-2227-4033-86a8-90fd2e693d00" readTimeoutUnit="MILLISECONDS" readTimeout="${salesforce.responseTimeout}">
+		<salesforce:basic-connection username="${secure::salesforce.username}" password="${secure::salesforce.password}" securityToken="${secure::salesforce.securityToken}" connectionTimeout="${salesforce.connectionTimeout}" connectionTimeoutUnit="MILLISECONDS" loginRequestTimeout="${salesforce.loginTimeout}" loginRequestTimeoutUnit="MILLISECONDS"/>
 	</salesforce:sfdc-config>
 	<apikit:config outboundHeadersMapName="outboundHeadersMapName" httpStatusVarName="httpStatus" doc:name="Router" doc:id="3b0911f7-fed6-4236-8799-69d5ce241a9f" name="salesforce-account-sapi-config" api="api/salesforce-account-sapi.yaml" />
 	

@@ -12,8 +12,12 @@ paths:
     post:
       tags:
         - Accounts
-      summary: Resourse to handle accounts
-      description: Resourse to handle accounts
+      summary: Resourse to create accounts
+      description: Resourse to create accounts
+      parameters:
+        - $ref: '#/components/parameters/correlationId'
+        - $ref: '#/components/parameters/clientName'
+        - $ref: '#/components/parameters/clientCorrelationId'
       requestBody:
         content:
           application/json:
@@ -28,13 +32,44 @@ paths:
           $ref: '#/components/responses/401-Error'
         '500':
           $ref: '#/components/responses/500-Error'
-
+    patch:
+      tags:
+        - Accounts
+      summary: Resourse to update accounts
+      description: Resourse to update accounts
+      parameters:
+        - $ref: '#/components/parameters/correlationId'
+        - $ref: '#/components/parameters/clientName'
+        - $ref: '#/components/parameters/clientCorrelationId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Accounts'
+      responses:
+        '200':
+          description: New accounts Created
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/Accounts"
+                  - $ref: "#/components/schemas/EmptyArray"
+        '400':
+          $ref: '#/components/responses/400-Error'
+        '401':
+          $ref: '#/components/responses/401-Error'
+        '500':
+          $ref: '#/components/responses/500-Error'
     get:
       tags:
         - Accounts
       summary: Retrieves accounts based on received comma separated accountId
       description: Retrieves accounts based on received comma separated accountId
       parameters:
+        - $ref: '#/components/parameters/correlationId'
+        - $ref: '#/components/parameters/clientName'
+        - $ref: '#/components/parameters/clientCorrelationId'
         - in: query
           name: accountId
           description: List of Comma separated accountId
@@ -67,6 +102,9 @@ paths:
       summary: Delete accounts based on received comma separated accountId
       description: Delete accounts based on received comma separated accountId
       parameters:
+        - $ref: '#/components/parameters/correlationId'
+        - $ref: '#/components/parameters/clientName'
+        - $ref: '#/components/parameters/clientCorrelationId'
         - in: query
           name: accountId
           description: List of Comma separated accountId
@@ -93,31 +131,7 @@ paths:
           $ref: '#/components/responses/404-Error'
         '500':
           $ref: '#/components/responses/500-Error'
-    patch:
-      tags:
-        - Accounts
-      summary: Resourse to update accounts
-      description: Resourse to update accounts
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Accounts'
-      responses:
-        '200':
-          description: New accounts Created
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: "#/components/schemas/Accounts"
-                  - $ref: "#/components/schemas/EmptyArray"
-        '400':
-          $ref: '#/components/responses/400-Error'
-        '401':
-          $ref: '#/components/responses/401-Error'
-        '500':
-          $ref: '#/components/responses/500-Error'
+    
   
   /accounts/search:
     post:
@@ -125,6 +139,13 @@ paths:
         - Accounts
       summary: Search a account by accountId, email, first name, lastname and company name
       description: Search a account by accountId, email, first name, lastname and company name
+      parameters:
+        - $ref: '#/components/parameters/correlationId'
+        - $ref: '#/components/parameters/clientName'
+        - $ref: '#/components/parameters/clientCorrelationId'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/limit'
+        
       requestBody:
         content:
           application/json:
@@ -155,6 +176,9 @@ paths:
         - Accounts
       summary: Get a account by accountId
       parameters:
+        - $ref: '#/components/parameters/correlationId'
+        - $ref: '#/components/parameters/clientName'
+        - $ref: '#/components/parameters/clientCorrelationId'
         - in: path
           name: accountId
           schema:
@@ -184,6 +208,9 @@ paths:
         - Accounts
       summary: Delete a account by accountId
       parameters:
+        - $ref: '#/components/parameters/correlationId'
+        - $ref: '#/components/parameters/clientName'
+        - $ref: '#/components/parameters/clientCorrelationId'
         - in: path
           name: accountId
           schema:
@@ -218,32 +245,7 @@ components:
         type: string
       maxItems: 0
 
-    AccountsSearch:
-      type: object
-      additionalProperties: false
-      properties:
-        id:
-          type: string
-          pattern: "^[A-Z,a-z,0-9]+$"
-          minLength: 1
-          maxLength: 18
-        firstName:
-          type: string
-          pattern: "^[A-Z,a-z]+$"
-          minLength: 1
-          maxLength: 50
-        lastName:
-          type: string
-          pattern: "^[A-Z,a-z]+$"
-          minLength: 1
-          maxLength: 50
-        email:
-          type: string
-        companyName:
-          type: string
-          pattern: "^[A-Z,a-z]+$"
-          minLength: 1
-          maxLength: 50
+    
 
        
     Individual:
@@ -258,16 +260,17 @@ components:
           maxLength: 18
         firstName:
           type: string
-          pattern: "^[A-Z,a-z]+$"
+          pattern: "^[A-Z,a-z ]+$"
           minLength: 1
           maxLength: 50
         lastName:
           type: string
-          pattern: "^[A-Z,a-z]+$"
+          pattern: "^[A-Z,a-z ]+$"
           minLength: 1
           maxLength: 50
         email:
           type: string
+          format: email
         address:
           type: array
           items:
@@ -286,16 +289,42 @@ components:
           maxLength: 18
         companyName:
           type: string
-          pattern: "^[A-Z,a-z]+$"
           minLength: 1
           maxLength: 50
         email:
           type: string
+          format: email
         address:
           type: array
           items:
             $ref: '#/components/schemas/Address'
-    
+            
+    AccountsSearch:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          pattern: "^[A-Z,a-z,0-9]+$"
+          minLength: 1
+          maxLength: 18
+        firstName:
+          type: string
+          pattern: "^[A-Z,a-z ]+$"
+          minLength: 1
+          maxLength: 50
+        lastName:
+          type: string
+          pattern: "^[A-Z,a-z ]+$"
+          minLength: 1
+          maxLength: 50
+        email:
+          type: string
+          format: email
+        companyName:
+          type: string
+          minLength: 1
+          maxLength: 50
         
     Address:
       type: object
@@ -305,16 +334,34 @@ components:
           enum: ["billing", "shipping"]
         addressLine1:
           type: string
+          pattern: "^[A-Z,a-z,0-9 ]+$"
+          minLength: 1
+          maxLength: 50
         addressLine2:
           type: string
+          pattern: "^[A-Z,a-z,0-9 ]+$"
+          minLength: 1
+          maxLength: 50
         city:
           type: string
+          pattern: "^[A-Z,a-z,0-9 ']+$"
+          minLength: 1
+          maxLength: 50
         state:
           type: string
+          pattern: "^[A-Z,a-z]+$"
+          minLength: 2
+          maxLength: 2
         postalCode:
           type: string
+          pattern: "^[A-Z,a-z,0-9]+$"
+          minLength: 1
+          maxLength: 15
         country:
           type: string
+          pattern: "^[A-Z,a-z,0-9]+$"
+          minLength: 2
+          maxLength: 3
     
     ErrorResponse:
       description: "Error object definition"
@@ -367,6 +414,52 @@ components:
         message:
           type: string
           description: "Error message"
+          
+  parameters:
+    correlationId:
+      name: x-correlation-id
+      in: header
+      required: false
+      description: Unique identifier generated by Mulesoft for internal traceability within the platform
+      schema:
+        type: string
+        format: uuid
+        example: 550e8400-e29b-41d4-a716-446655440000
+    clientName:
+      name: x-client-name
+      in: header
+      required: false
+      description: Calling Client API Name
+      schema:
+        type: string
+        format: string
+        example: Process API
+    clientCorrelationId:
+      name: x-client-correlation-id
+      in: header
+      required: false
+      description: Unique identifier generated by the client for end-to-end traceability
+      schema:
+        type: string
+        format: uuid
+        example: 550e8400-e29b-41d4-a716-446655447777
+    offset:
+      name: offset
+      in: query
+      required: false
+      description: Offset of records to be retrieved, offset 0 retrieved first 10 records
+      schema:
+        type: string
+        example: '0'
+    limit:
+      name: limit
+      in: query
+      required: false
+      description: Limit of records to be retrieved default 10
+      schema:
+        type: string
+        example: '10'
+      
   
   responses:
     400-Error:

@@ -1,15 +1,15 @@
 %dw 2.0
 import * from dw::core::Strings
 var query  = p('salesforce.searchQuery')
-var idQuery = if(!isBlank(payload.id)) " Id = '" ++ payload.id ++ "' AND "else ""
+var idQuery = if(!isBlank(payload.id)) " Id = '" ++ trim(payload.id default "") ++ "' AND "else ""
 var nameQuery = if(!isBlank(payload.firstName) or !isBlank(payload.lastName))
-                    " Name LIKE '%"  ++ ((payload.firstName default "") ++ " " ++ (payload.lastName default                     "")) ++ "%' AND "
+                    " Name LIKE '%"  ++ ((trim(payload.firstName default "")) ++ " " ++ (trim(payload.lastName default ""))) ++ "%' AND "
                 else ""
 var companyQuery = if (!isBlank(payload.companyName))
-                        " Name LIKE '%" ++ payload.companyName ++ "%' AND "
+                        " Name LIKE '%" ++ trim(payload.companyName default "") ++ "%' AND "
                 else ""
 var emailQuery = if (!isBlank(payload.email))
-                        " Email__c = '" ++ payload.email ++ "' AND "
+                        " Email__c = '" ++ trim(payload.email default "") ++ "' AND "
                 else ""
 output application/json
 ---

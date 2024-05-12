@@ -10,7 +10,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 		<until-successful maxRetries="${salesforce.untilSuccessful.retries}" doc:name="Until Successful" doc:id="d6a04651-55e9-4362-acc1-f7f9ad8e0f79" millisBetweenRetries="${salesforce.untilSuccessful.ms}">
 			<try doc:name="Try" doc:id="33a71917-dc58-4775-88d9-96e6cbd0dab9" >
 				<salesforce:delete doc:name="Delete Accounts" doc:id="eb08ee70-983f-45b9-914e-d7446cbd9344" config-ref="salesforce-config">
-					<salesforce:ids ><![CDATA[#[(attributes.queryParams["accountId"] splitBy  ",") default [attributes.uriParams["accountId"]]]]]></salesforce:ids>
+					<salesforce:ids ><![CDATA[#[(((attributes.queryParams["accountId"] splitBy  ",")[?!isBlank($)])  map trim($)) default [attributes.uriParams["accountId"]]]]]></salesforce:ids>
 				</salesforce:delete>
 				<error-handler >
 					<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="54755e0e-4d3a-4cc2-8058-ffd525f23843" type="SALESFORCE:COMMUNICATION, SALESFORCE:CONNECTIVITY, SALESFORCE:TIMEOUT, SALESFORCE:UNAVAILABLE">

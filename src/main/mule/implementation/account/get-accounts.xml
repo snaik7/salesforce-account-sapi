@@ -10,7 +10,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 			<try doc:name="Try" doc:id="33a71917-dc58-4775-88d9-96e6cbd0dab9">
 				<salesforce:retrieve doc:name="Retrieve Accounts" doc:id="990e4585-30b3-4a54-abf9-14c59820280a" config-ref="salesforce-config" type="Account">
 					<salesforce:retrieve-request><![CDATA[#[{
-	"ids": (attributes.queryParams["accountId"] splitBy  ",") default [attributes.uriParams["accountId"]],
+	"ids": (((attributes.queryParams["accountId"] splitBy  ",")[?!isBlank($)]) map trim($))  default [attributes.uriParams["accountId"]],
 	"fields": [p('salesforce.getFields')]
 }]]]></salesforce:retrieve-request>
 				</salesforce:retrieve>

@@ -10,3 +10,5 @@ errorMessage:
   getAccount: "Get Account failed in Salesforce"
   account: "Account operation failed in Salesforce"
   searchAccount: "Search Account failed in Salesforce"
+  
+limit: "10"

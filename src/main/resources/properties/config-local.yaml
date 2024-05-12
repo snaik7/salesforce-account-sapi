@@ -17,6 +17,9 @@ salesforce:
   untilSuccessful:
     retries: "1" 
     ms: "5000" 
+  responseTimeout: "30000"
+  connectionTimeout: "60000"
+  loginTimeout: "60000"
     
 autodiscovery:
   id: "18315934"

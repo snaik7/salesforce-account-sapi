@@ -4,7 +4,7 @@ output application/json
 ---
 (payload map ((account, accountIndex) -> {
 	Id: account.id,
-	Name: if (getAccountType(account) == "individual") ((account.firstName default "") ++ " " ++ (account.lastName  default "")) else if (getAccountType(account) == "business") account.companyName  else "unknown",
+	Name: if (getAccountType(account) == "individual") ((trim(account.firstName) default "") ++ " " ++ (trim(account.lastName)  default "")) else if (getAccountType(account) == "business") trim(account.companyName)  else "unknown",
 	Type: getAccountType(account),
 	Email__c: account.email,
 	BillingStreet: account.address[?($.addressType=="billing")].addressLine1[0],
