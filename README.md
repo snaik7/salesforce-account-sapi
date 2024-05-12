@@ -1,5 +1,6 @@
 # salesforce-account-sapi
 Salesforce Account System API 
+
 The API is design for assignment of Application Integration Engineer.
 
 # Overview
@@ -72,7 +73,7 @@ The prerequisite for connecting to Salesforce was synchronous communication. The
 The MuleSoft Salesforce Connector facilitates essential operations such as create, read, upsert, and delete across Salesforce objects. It also handles authentication and error management. However, it does not expose all potential Salesforce APIs. Nevertheless, it sufficiently supports current requirements and allows for future adjustments.
 
 
-### Authentication for MuleSoft Ssalsforce Connector
+### Authentication for MuleSoft Salesforce Connector
 
 The Salesforce connector offers support for both Basic Authentication and OAuth2.
 - Basic Authentication
@@ -160,21 +161,31 @@ Before executing any requests, please ensure that the application is running smo
 
 The collection performs the following actions:
 
-Create Accounts: Creates multiple accounts with different account types.
-Update Accounts: Updates multiple accounts with different account types.
-Get Account: Retrieves a single account.
-Get Accounts: Retrieves multiple accounts when specified in the query parameter as a comma-separated list of accountIds.
-Delete Account: Deletes a single account.
-Delete Accounts: Deletes multiple accounts when specified in the query parameter as a comma-separated list of accountIds.
-Search Accounts: Searches for accounts based on name (first and last name or company name), email, and account Id. Pagination functionality enables users to access the next set of 10 records by passing the next offset parameter. 
+- Create Accounts: Creates multiple accounts with different account types.
+
+- Update Accounts: Updates multiple accounts with different account types.
+
+- Get Account: Retrieves a single account.
+
+- Get Accounts: Retrieves multiple accounts when specified in the query parameter as a comma-separated list of accountIds.
+
+- Delete Account: Deletes a single account.
+
+- Delete Accounts: Deletes multiple accounts when specified in the query parameter as a comma-separated list of accountIds.
+
+- Search Accounts: Searches for accounts based on name (first and last name or company name), email, and account Id. Pagination functionality enables users to access the next set of 10 records by passing the next offset parameter. 
+
 
 ## Extensions and customizations
 
 The following features can be added:
 
-HHTPS Support for HTTP listener
-OAuth2 Support
-TLS Support
-Auto-discovery
+- HTTPS Support for HTTP listener
+
+- OAuth2 Support
+
+- TLS Support
+
+- Auto-discovery
 
 
