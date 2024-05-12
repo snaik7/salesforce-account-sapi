@@ -16,15 +16,39 @@ App is not hosted in cloud and it's for curretly for local use and can be extend
 
 ## Design Decisions
 
+1. Connecting to Salesforce
 
-Design Desicions    		| Choices 			| Best suited to meet requirements
-------------- 				| -------------
-Connecting to Salesforce  	| REST API
-			  				| Graph QL API
+The prerequisite for connecting to Salesforce was synchronous communication. The document - https://help.salesforce.com/s/articleView?id=sf.integrate_what_is_api.htm&type=5 - helps to decide the appropriate API for connecting to Salesforce:
+
+- REST API using Mule HTTP Connector
+- GraphQL API using Mule HTTP Connector
+- SOAP API using Mule Webservice Connector
+- MuleSoft Salesforce Connector 
+
+The MuleSoft Salesforce Connector facilitates essential operations such as create, read, upsert, and delete across Salesforce objects. It also handles authentication and error management. However, it does not expose all potential Salesforce APIs. Nevertheless, it sufficiently supports current requirements and allows for future adjustments.
+
+
+2. No TLS for Salesforce Communication
+- The application designed to run locally hence TLS feature is not implemented. However it can added in future for higher environments.
+
+3. Authentication for MuleSoft Ssalsforce Connector
+- Basic Authentication
+- OAuth2 with grant types - password or JWT
+
+It seems trial version of salesforce account supports Basic Authentication. However, OAuth2 can added in future. 
+
+4. No Autodiscovery
+
+- The application designed to run locally hence Autodiscovery feature is not implemented. 
+
+
+## API Specification
+
+https://app.swaggerhub.com/apis/NAIKSANTOSH/salesforce-account-sapi/1.0.0
 
 ## Usage
 
-Postman Collection for API
+Postman Collection for API  https://api.postman.com/collections/772995-587bae43-3263-46c6-9e85-871b59d71a78?access_key=PMAT-01HXNPFV9B22EEYXCXW14HS17X
 
 
 Collection performs -
