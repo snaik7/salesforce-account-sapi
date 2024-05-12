@@ -3,26 +3,28 @@ Salesforce Account System API
 
 # Overview
 
-The README file introduces the general approach for organizing app and then explains how to install it, how to use the existing functionality and how to extend it. 
+The README file provides an overview of the application's purpose and functionality, along with instructions for installation, utilization of existing features, and expansion possibilities.
 
 ## Introduction 
 
-The goal is to have a zero to hero one-click setup that can be extended for specific purposes (e.g. demo stuff) without touching the base. 
+The goal is to have  one-click setup that can be run locally without touching the code base. Hence envoronment variable and encrption key for security property is injected in app using global property. 
 
 ## Installation
 
-Make sure git is installed:
-Then, clone the repository and import mule app.
+Make sure git is installed. Then, clone the repository and import mule app in Anypoint Studio.
+App is not hosted in cloud and it's for curretly for local use and can be extended to higher environemnt with minor changes. 
+
+## Design Decisions
 
 
-Hosted App : not hosted
+Design Desicions    		| Choices 			| Best suited to meet requirements
+------------- 				| -------------
+Connecting to Salesforce  	| REST API
+			  				| Graph QL API
 
 ## Usage
 
 Postman Collection for API
-
-
-Postman Collection for Automated Testing for API
 
 
 Collection performs -
@@ -31,8 +33,6 @@ Create Accounts
 
 Update Accounts 
 
-Search Accounts 
-
 Get Account - Single Account
 
 Get Accounts - Multiple Accounts if send in query param as comma seperated value in accountId
@@ -40,6 +40,8 @@ Get Accounts - Multiple Accounts if send in query param as comma seperated value
 Delete Account - Single Account
 
 Delete Accounts - Multiple Accounts if send in query param as comma seperated value in accountId
+
+Search Accounts 
 
 ## Extensions and customizations
 
