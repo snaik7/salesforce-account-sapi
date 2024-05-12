@@ -1,0 +1,443 @@
+{
+	"info": {
+		"_postman_id": "ae6ca28d-f08e-4165-86f7-46a298c62ce0",
+		"name": "salesforce-customer-sapi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33645607",
+		"_collection_link": "https://arvest-bank.postman.co/workspace/My-Workspace~0217d65c-1f9f-42e4-8857-38a2ead813fb/collection/33645607-ae6ca28d-f08e-4165-86f7-46a298c62ce0?action=share&source=collection_link&creator=33645607"
+	},
+	"item": [
+		{
+			"name": "Create Accounts - Business and Individual",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();",
+							"console.log(responseJson[0].id);",
+							"pm.environment.set(\"accountId0\", responseJson[0].id);",
+							"pm.environment.set(\"accountId1\", responseJson[1].id);",
+							"pm.environment.set(\"accountId2\", responseJson[2].id);",
+							"pm.test(\"Status code is 201\", () => {",
+							"  pm.expect(pm.response.code).to.eql(201);",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n    {\n        \"companyName\": \"{{$randomCompanyName}}\",\n        \"email\": \"{{$randomEmail}}\",\n        \"address\": [\n            {\n                \"addressType\": \"billing\",\n                \"addressLine1\": \"{{$randomStreetAddress}}\",\n                \"city\": \"{{$randomCity}}\",\n                \"state\": \"CA\",\n                \"postalCode\": \"94526\",\n                \"country\": \"{{$randomCountryCode}}\"\n            },\n            {\n                \"addressType\": \"shipping\",\n                \"addressLine1\": \"{{$randomStreetAddress}}\",\n                \"city\": \"{{$randomCity}}\",\n                \"state\": \"CA\",\n                \"postalCode\": \"94526\",\n                \"country\": \"{{$randomCountryCode}}\"\n            }\n        ]\n    },\n    {\n        \"firstName\": \"{{$randomFirstName}}\",\n        \"lastName\": \"{{$randomLastName}}\",\n        \"email\": \"{{$randomEmail}}\",\n        \"address\": [\n            {\n                \"addressType\": \"billing\",\n                \"addressLine1\": \"{{$randomStreetAddress}}\",\n                \"city\": \"{{$randomCity}}\",\n                \"state\": \"CA\",\n                \"postalCode\": \"94526\",\n                \"country\": \"{{$randomCountryCode}}\"\n            },\n            {\n                \"addressType\": \"shipping\",\n                 \"addressLine1\": \"{{$randomStreetAddress}}\",\n                \"city\": \"{{$randomCity}}\",\n                \"state\": \"CA\",\n                \"postalCode\": \"94526\",\n                \"country\": \"{{$randomCountryCode}}\"\n            }\n        ]\n    },\n    {\n        \"firstName\": \"{{$randomFirstName}}\",\n        \"lastName\": \"{{$randomLastName}}\",\n        \"email\": \"{{$randomEmail}}\",\n        \"address\": [\n            {\n                \"addressType\": \"billing\",\n                \"addressLine1\": \"{{$randomStreetAddress}}\",\n                \"city\": \"{{$randomCity}}\",\n                \"state\": \"CA\",\n                \"postalCode\": \"94526\",\n                \"country\": \"{{$randomCountryCode}}\"\n            },\n            {\n                \"addressType\": \"shipping\",\n                 \"addressLine1\": \"{{$randomStreetAddress}}\",\n                \"city\": \"{{$randomCity}}\",\n                \"state\": \"CA\",\n                \"postalCode\": \"94526\",\n                \"country\": \"{{$randomCountryCode}}\"\n            }\n        ]\n    }\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/accounts",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Accounts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {",
+							"  pm.expect(pm.response.code).to.eql(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n    {\n        \"id\": \"001am00000aXEfNAAW\",\n        \"companyName\": \"ABC Inc\",\n        \"email\": \"abc@abc.com\",\n        \"address\": [\n            {\n                \"addressType\": \"billing\",\n                \"addressLine1\": \"Diablo Valley Rd\",\n                \"city\": \"Danville\",\n                \"state\": \"CA\",\n                \"postalCode\": \"94526\",\n                \"country\": \"IN\"\n            },\n            {\n                \"addressType\": \"shipping\",\n                \"addressLine1\": \"Diablo Valley Rd\",\n                \"city\": \"Danville\",\n                \"state\": \"CA\",\n                \"postalCode\": \"94526\",\n                \"country\": \"IN\"\n            }\n        ]\n    }\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/accounts",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Accounts - Individual",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {",
+							"  pm.expect(pm.response.code).to.eql(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/accounts/001am00000aXEfOAAW",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"accounts",
+						"001am00000aXEfOAAW"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Accounts - Business",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {",
+							"  pm.expect(pm.response.code).to.eql(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/accounts/001am00000aXEfNAAW",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"accounts",
+						"001am00000aXEfNAAW"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Accounts Multiple",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {",
+							"  pm.expect(pm.response.code).to.eql(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n    {\n        \"firstName\": \"Santosh\",\n        \"lastName\": \"Fttt\",\n       // \"companyName\": \"ss\",\n        \"email\": \"x@y.co\",\n        \"address\": [\n            {\n                \"addressType\": \"billing\",\n                \"addressLine1\": \"216 valley\",\n                \"addressLine2\": \"Test\",\n                \"city\": \"Damville\",\n                \"state\": \"CA\",\n                \"postalCode\": \"94526\",\n                \"country\": \"US\"\n            },\n            {\n                \"addressType\": \"shipping\",\n                \"addressLine1\": \"216 valley\",\n                \"addressLine2\": \"Test\",\n                \"city\": \"Damville\",\n                \"state\": \"CA\",\n                \"postalCode\": \"94526\",\n                \"country\": \"  \"\n            }\n        ]\n    }\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/accounts?accountId=001am00000aXEfOAAW,001am00000aXEfNAAW",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"accounts"
+					],
+					"query": [
+						{
+							"key": "accountId",
+							"value": "001am00000aXEfOAAW,001am00000aXEfNAAW"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Accounts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", () => {",
+							"  pm.expect(pm.response.code).to.eql(204);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/accounts/{{accountId0}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"accounts",
+						"{{accountId0}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Accounts Multiple",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {",
+							"  pm.expect(pm.response.code).to.eql(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/accounts?accountId={{accountId1}},{{accountId2}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"accounts"
+					],
+					"query": [
+						{
+							"key": "accountId",
+							"value": "{{accountId1}},{{accountId2}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Accounts - Individual",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {",
+							"  pm.expect(pm.response.code).to.eql(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\n    {\n        \"id\": \"001am00000aXEfOAAW\",\n        \"firstName\": \"Steff Jr\",\n        \"lastName\": \"Curry\",\n        \"email\": \"steff@warriors.com\"\n       \n    }\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/accounts/search",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"accounts",
+						"search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Accounts - Business",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {",
+							"  pm.expect(pm.response.code).to.eql(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\n    {\n        \"id\": \"001am00000aXTCzAAO\",\n        \"companyName\": \"Muller and Sons\",\n        \"email\": \"willow_kiehn@gmail.com\"\n       \n    }\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/accounts/search",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"accounts",
+						"search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Accounts - Pagination",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {",
+							"  pm.expect(pm.response.code).to.eql(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"companyName\": \"A\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/accounts/search?limit=10&offset=5",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"accounts",
+						"search"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "10"
+						},
+						{
+							"key": "offset",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
