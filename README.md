@@ -29,9 +29,13 @@ The MuleSoft Salesforce Connector facilitates essential operations such as creat
 
 
 2. No TLS for Salesforce Communication
+
+The Salesforce connector offers support for TLS communication between client and Salesforce API.
 - The application designed to run locally hence TLS feature is not implemented. However it can added in future for higher environments.
 
 3. Authentication for MuleSoft Ssalsforce Connector
+
+The Salesforce connector offers support for both Basic Authentication and OAuth2.
 - Basic Authentication
 - OAuth2 with grant types - password or JWT
 
