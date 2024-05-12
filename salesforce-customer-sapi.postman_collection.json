@@ -87,7 +87,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "[\n    {\n        \"id\": \"001am00000aXEfNAAW\",\n        \"companyName\": \"ABC Inc\",\n        \"email\": \"abc@abc.com\",\n        \"address\": [\n            {\n                \"addressType\": \"billing\",\n                \"addressLine1\": \"Diablo Valley Rd\",\n                \"city\": \"Danville\",\n                \"state\": \"CA\",\n                \"postalCode\": \"94526\",\n                \"country\": \"IN\"\n            },\n            {\n                \"addressType\": \"shipping\",\n                \"addressLine1\": \"Diablo Valley Rd\",\n                \"city\": \"Danville\",\n                \"state\": \"CA\",\n                \"postalCode\": \"94526\",\n                \"country\": \"IN\"\n            }\n        ]\n    }\n]",
+					"raw": "[\n    {\n        \"id\": \"{{accountId0}}\",\n        \"companyName\": \"ABC Inc\",\n        \"email\": \"abc@abc.com\",\n        \"address\": [\n            {\n                \"addressType\": \"billing\",\n                \"addressLine1\": \"Diablo Valley Rd\",\n                \"city\": \"Danville\",\n                \"state\": \"CA\",\n                \"postalCode\": \"94526\",\n                \"country\": \"IN\"\n            },\n            {\n                \"addressType\": \"shipping\",\n                \"addressLine1\": \"Diablo Valley Rd\",\n                \"city\": \"Danville\",\n                \"state\": \"CA\",\n                \"postalCode\": \"94526\",\n                \"country\": \"IN\"\n            }\n        ]\n    }\n]",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -126,13 +126,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{url}}/accounts/001am00000aXEfOAAW",
+					"raw": "{{url}}/accounts/{{accountId1}}",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
 						"accounts",
-						"001am00000aXEfOAAW"
+						"{{accountId1}}"
 					]
 				}
 			},
@@ -158,13 +158,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{url}}/accounts/001am00000aXEfNAAW",
+					"raw": "{{url}}/accounts/{{accountId0}}",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
 						"accounts",
-						"001am00000aXEfNAAW"
+						"{{accountId0}}"
 					]
 				}
 			},
@@ -202,7 +202,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{url}}/accounts?accountId=001am00000aXEfOAAW,001am00000aXEfNAAW",
+					"raw": "{{url}}/accounts?accountId={{accountId0}},{{accountId1}}",
 					"host": [
 						"{{url}}"
 					],
@@ -212,7 +212,7 @@
 					"query": [
 						{
 							"key": "accountId",
-							"value": "001am00000aXEfOAAW,001am00000aXEfNAAW"
+							"value": "{{accountId0}},{{accountId1}}"
 						}
 					]
 				}
