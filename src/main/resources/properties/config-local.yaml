@@ -19,8 +19,14 @@ salesforce:
     ms: "5000" 
   responseTimeout: "30000"
   connectionTimeout: "60000"
+  objectTTL: "30"
+  maxEntries: "10"
   loginTimeout: "60000"
-    
+  recordLimit: "1000"
+
+limit: "10"
+bulklimit: "10"
+
 autodiscovery:
   id: "18315934"
   

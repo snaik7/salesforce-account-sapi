@@ -260,12 +260,12 @@ components:
           maxLength: 18
         firstName:
           type: string
-          pattern: "^[A-Z,a-z ]+$"
+          pattern: "^[A-Z,a-z ']+$"
           minLength: 1
           maxLength: 50
         lastName:
           type: string
-          pattern: "^[A-Z,a-z ]+$"
+          pattern: "^[A-Z,a-z ']+$"
           minLength: 1
           maxLength: 50
         email:
@@ -334,12 +334,12 @@ components:
           enum: ["billing", "shipping"]
         addressLine1:
           type: string
-          pattern: "^[A-Z,a-z,0-9 ]+$"
+          pattern: "^[A-Z,a-z,0-9 ']+$"
           minLength: 1
           maxLength: 50
         addressLine2:
           type: string
-          pattern: "^[A-Z,a-z,0-9 ]+$"
+          pattern: "^[A-Z,a-z,0-9 ']+$"
           minLength: 1
           maxLength: 50
         city:

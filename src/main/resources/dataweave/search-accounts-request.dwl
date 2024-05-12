@@ -13,4 +13,4 @@ var emailQuery = if (!isBlank(payload.email))
                 else ""
 output application/json
 ---
-substringBeforeLast(query ++ idQuery ++ nameQuery ++ companyQuery ++ emailQuery, "AND")
+substringBeforeLast(query ++ idQuery ++ nameQuery ++ companyQuery ++ emailQuery, "AND") ++ " LIMIT " ++ p('salesforce.recordLimit')

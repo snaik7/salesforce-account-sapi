@@ -54,7 +54,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 		</ee:transform>
 		</when>
 			<otherwise >
-				<raise-error doc:name="ACCOUNT:BAD_REQUEST" doc:id="051970e8-f453-4746-8b7d-db33e7d28b09" type="ACCOUNT:BAD_REQUEST" description="#[p('errorMessage.emptyPayload')]"/>
+				<raise-error doc:name="ACCOUNT:BAD_REQUEST" doc:id="051970e8-f453-4746-8b7d-db33e7d28b09" type="ACCOUNT:BAD_REQUEST" description="#[vars.validationError[0]]"/>
 			</otherwise>
 		</choice>
 	</sub-flow>

@@ -5,10 +5,10 @@ api:
   
 errorMessage:
   emptyPayload: "The request is empty"
+  largePayload: "The request can not process more than 10 recrods"
   individualBusinessInvalidSearch: "Individual and Business search can't be performed together"
   deleteAccount: "Delete Account failed in Salesforce"
   getAccount: "Get Account failed in Salesforce"
   account: "Account operation failed in Salesforce"
   searchAccount: "Search Account failed in Salesforce"
   
-limit: "10"

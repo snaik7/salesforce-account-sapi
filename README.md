@@ -34,6 +34,11 @@ git status
 Note that the application is not hosted in the cloud and is currently designed for local use. Nevertheless, it can be readily extended to higher environments with minor modifications.
 
 
+## Known Issues
+
+The Postman Collection designed for testing generates random first names, last names, company names, addresses, and cities. While executing the tests, certain fields fail the strict validations due to discrepancies between the input data and the validation criteria. These failures don't necessarily indicate errors but rather business validation errors arising from mismatched input data and the validation rules in place.
+
+
 ## Help
 
 If you have any issue with running project, please send an email to Author. 
@@ -100,13 +105,17 @@ The application does not employ payload data logging; therefore, masking feature
 
 ### Performance
 
-The API's performance was evaluated during the time of writing. The Salesforce connector resource pooling is configured to default settings.
+At the time of writing, the API's performance had not been assessed. The resource pooling for the Salesforce connector is set to default configurations, yet it's defined in a property file, allowing for adjustments as needed.
 
 All performance properties, such as responseTimeout, loginTimeout, or connectionTimeout, are set in the properties file.
 
-We limit the search results to 10 records per account search request and enable users to retrieve the next set of records. This approach reduces the number of records handled at the client end, enhancing performance.
+We limit the search results to 10 records per account search request and enable users to retrieve the next set of records. This approach reduces the number of records handled at the client end, enhancing performance. 
 
-As of now, the number of records retrieved from queries can be limited; however, this feature has not been implemented yet.
+At present, queries for records from Salesforce are restricted to fetching a maximum of 1000 items. Nevertheless, this constraint can be modified through a configurable parameter.
+
+Bulk insert and updates are currently capped at 10 records per operation, but this limit is configurable.
+
+
 
 ### Reliability 
 
@@ -130,9 +139,12 @@ HTTPS is not implemented for the API. However it can added in future for higher 
 
 Since the application is designed to run locally, the TLS feature is not implemented.
 
+The application designed to run locally hence Autodiscovery feature is not implemented. Consequently, no API gateway policies have been applied, though the API specs outline the use of a JWT Authorization header for potential future integration.
+
 ### Alert and Notification
 
-After encountering RETRY_EXHAUSTED in the Salesforce Connector, the error handler for RETRY_EXHAUSTED can include specialized error logging to Splunk or Sumo. This logging mechanism can trigger alerts in Splunk or integrate with Slack notifications via hooks. Notifications are not currently implemented in the code.
+
+Following the occurrence of RETRY_EXHAUSTED in the Salesforce Connector, the error handler for RETRY_EXHAUSTED was integrated in APIKIT error handler. Nonetheless, there's a lack of specialized error logging to Splunk or Sumo Logic. Such logging capabilities could activate alerts in Splunk or seamlessly integrate with Slack notifications through hooks. Presently, notifications are absent from the code implementation.
 
 
 ### No TLS for Salesforce Communication
@@ -184,7 +196,7 @@ The following features can be added:
 
 - OAuth2 Support
 
-- TLS Support
+- TLS Support for Salesforce Connector
 
 - Auto-discovery
 

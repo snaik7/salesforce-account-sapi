@@ -6,6 +6,7 @@
 http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<sub-flow name="get-accounts" doc:id="a544842f-a57f-46bc-b6a4-8a11f9765bfd" >
+	
 		<until-successful maxRetries="${salesforce.untilSuccessful.retries}" doc:name="Until Successful" doc:id="d6a04651-55e9-4362-acc1-f7f9ad8e0f79" millisBetweenRetries="${salesforce.untilSuccessful.ms}">
 			<try doc:name="Try" doc:id="33a71917-dc58-4775-88d9-96e6cbd0dab9">
 				<salesforce:retrieve doc:name="Retrieve Accounts" doc:id="990e4585-30b3-4a54-abf9-14c59820280a" config-ref="salesforce-config" type="Account">
@@ -19,12 +20,13 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 						<logger level="ERROR" doc:name="Error" doc:id="f5087436-1ffe-4361-9071-f56a24c67e6f" message="correlationId=#[correlationId] -- Error is #[error.description]. Other details  #[error.errorType] #[error.exception]" />
 					</on-error-propagate>
 					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="d7f1dc2c-2181-4bef-8bbf-e9f5c0a9a9e9" type="ANY">
-						<set-variable value="#[true]" doc:name="errorAny" doc:id="1c549106-069a-4b68-b4c8-49b599f38b83" variableName="errorAny"/>
+						<set-variable value="#[true]" doc:name="errorAny" doc:id="1c549106-069a-4b68-b4c8-49b599f38b83" variableName="errorAny" />
 						<logger level="ERROR" doc:name="Error" doc:id="1c17e313-a979-466f-8211-cc248925abbd" message="correlationId=#[correlationId] -- Error is #[error.description]. Other details  #[error.errorType] #[error.exception]" />
 					</on-error-continue>
 				</error-handler>
 			</try>
 		</until-successful>
+	
 		<choice doc:name="Error ?" doc:id="2e12f707-3636-4863-a7b9-4f5159538bab" >
 			<when expression="#[vars.errorAny]">
 				<raise-error doc:name="ACCOUNT:GET_ACCOUNT" doc:id="100bac82-5144-4868-a16e-a708176c6ba3" type="ACCOUNT:GET_ACCOUNT" description="#[p('errorMessage.getAccount')]"/>
