@@ -7,12 +7,11 @@ The README file provides an overview of the application's purpose and functional
 
 ## Introduction 
 
-The goal is to have  one-click setup that can be run locally without touching the code base. Hence envoronment variable and encrption key for security property is injected in app using global property. 
+The objective is to achieve a one-click setup that can be executed locally without any modifications to the code base. To accomplish this, environment variable - local and an encryption key for security properties are injected into the application using global properties.
 
 ## Installation
 
-Make sure git is installed. Then, clone the repository and import mule app in Anypoint Studio.
-App is not hosted in cloud and it's for curretly for local use and can be extended to higher environemnt with minor changes. 
+Ensure that Git is installed on your system. Afterward, clone the repository and import the Mule application into Anypoint Studio. Run the application within the Studio environment. Note that the application is not hosted in the cloud and is currently designed for local use. Nevertheless, it can be readily extended to higher environments with minor modifications.
 
 ## Design Decisions
 
@@ -52,7 +51,12 @@ https://app.swaggerhub.com/apis/NAIKSANTOSH/salesforce-account-sapi/1.0.0
 
 ## Usage
 
-Postman Collection for API  https://api.postman.com/collections/772995-587bae43-3263-46c6-9e85-871b59d71a78?access_key=PMAT-01HXNPFV9B22EEYXCXW14HS17X
+Postman Collection for API  
+
+You can download Postman collection for API and environment from root of repository for API. 
+
+- Collection File Name - salesforce-customer-sapi.postman_collection.json
+- Environment File Name - salesforce-customer-sapi-env.postman_environment.json
 
 
 Collection performs -
