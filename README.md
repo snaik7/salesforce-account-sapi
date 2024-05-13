@@ -17,6 +17,7 @@ The objective is to achieve a one-click setup that can be executed locally witho
 ### Dependencies
 
 * Anypoint Studio with Maven setup
+* Minimum Mule Runtime 4.4.0
 * Postman 
 * Git or any Git Client App
 
@@ -31,7 +32,7 @@ git status
 * Import the Mule application into Anypoint Studio. 
 * Run the application within the Studio environment. 
 
-Note that the application is not hosted in the cloud and is currently designed for local use. Nevertheless, it can be readily extended to higher environments with minor modifications.
+Note that the application is currently designed for local and non prod use. Nevertheless, it can be readily extended to higher environments with minor modifications.
 
 
 ## Known Issues
@@ -137,9 +138,9 @@ Secure properties are utilized to store sensitive credentials such as usernames 
 
 HTTPS is not implemented for the API. However it can added in future for higher environments.
 
-Since the application is designed to run locally, the TLS feature is not implemented.
+Since the application is designed to run locally and non production, the TLS feature is not implemented.
 
-The application designed to run locally hence Autodiscovery feature is not implemented. Consequently, no API gateway policies have been applied, though the API specs outline the use of a JWT Authorization header for potential future integration.
+The application designed to run locally and non production hence Autodiscovery feature is not implemented. Consequently, no API gateway policies have been applied, though the API specs outline the use of a JWT Authorization header for potential future integration.
 
 ### Alert and Notification
 
@@ -150,12 +151,12 @@ Following the occurrence of RETRY_EXHAUSTED in the Salesforce Connector, the err
 ### No TLS for Salesforce Communication
 
 The Salesforce connector offers support for TLS communication between client and Salesforce API.
-- The application designed to run locally hence TLS feature is not implemented. However it can added in future for higher environments.
+- The application designed to run locally and non production  hence TLS feature is not implemented. However it can added in future for higher environments.
 
 
 ### No Autodiscovery
 
-- The application designed to run locally hence Autodiscovery feature is not implemented. 
+- The application designed to run locally and non production hence Autodiscovery feature is not implemented. 
 
 
 ## Usage
@@ -165,11 +166,14 @@ Postman Collection for API
 You can download Postman collection for API and environment from root of repository for API. 
 
 - Collection File Name - salesforce-customer-sapi.postman_collection.json
-- Environment File Name - For local             - local-env-salesforce-customer-sapi.postman_environment.json
-						- For Cloudhub Sandbox  - dev-env-salesforce-customer-sapi.postman_environment.json
+- Environment File Name
+
+  -- For local             - local-env-salesforce-customer-sapi.postman_environment.json
+  
+  -- For Cloudhub Sandbox  - dev-env-salesforce-customer-sapi.postman_environment.json
 
 
-Before executing any requests, please ensure that the application is running smoothly in Anypoint Studio without any errors. Afterward, you can import the Postman collection and environment into Postman for seamless testing. Additionally, make sure that the environment is correctly configured in Postman.
+Prior to initiating any requests, it's essential to verify that the application is functioning smoothly within Anypoint Studio, free from any errors. Once confirmed, proceed to import both the Postman collection and environment into Postman for effortless testing. It's crucial to ensure that the environment is accurately configured within Postman. Moreover, APIs can also be accessed from CloudHub.
 
 
 The collection performs the following actions:
