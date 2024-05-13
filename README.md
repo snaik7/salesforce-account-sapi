@@ -47,7 +47,7 @@ If you have any issue with running project, please send an email to Author.
 
 ## API Specification
 
-The API specifications have been published to SwaggerHub at the following link: https://app.swaggerhub.com/apis/NAIKSANTOSH/salesforce-account-sapi/1.0.0
+The API specifications have been published to SwaggerHub at the following link: https://app.swaggerhub.com/apis-docs/NAIKSANTOSH/salesforce-account-sapi/1.0.0
 
 ## Design Decisions
 
