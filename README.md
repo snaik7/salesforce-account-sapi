@@ -17,6 +17,7 @@ The objective is to achieve a one-click setup that can be executed locally witho
 ### Dependencies
 
 * Anypoint Studio with Maven setup
+* Minimum Mule Runtime 4.4.0
 * Postman 
 * Git or any Git Client App
 
