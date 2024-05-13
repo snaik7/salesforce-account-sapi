@@ -64,7 +64,7 @@ We've supplied endpoints for both creating and updating accounts. However, we co
 We've provided endpoints for both retrieving and deleting individual accounts using the accountId. Furthermore, we've extended support for deleting or retrieving multiple accounts by allowing the accountId query parameter to accept a comma-separated list of accountIds. While we could have converted this functionality into a POST method, doing so may violate REST principles. Since Account Ids are not considered sensitive information, it's appropriate to offer the option for retrieving multiple accounts using a GET request.
 
 
-We have opted not to include an endpoint for retrieving all accounts. This decision was made due to potential performance issues when dealing with thousands of accounts. Instead, we have provided search options for accounts based on name, accountId, and email. The search functionality operates on an AND logic, meaning that all provided search criteria are applied. However, only one of the search criteria is mandatory for the search to execute successfully.
+We have opted not to include an endpoint for retrieving all accounts. This decision was made due to potential performance issues when dealing with thousands of accounts. Instead, we have provided search options for accounts based on first and last name or company name, accountId, and email. The search functionality operates on an AND logic, meaning that all provided search criteria are applied. However, only one of the search criteria is mandatory for the search to execute successfully.
 
 
 ### Connecting to Salesforce
@@ -136,9 +136,7 @@ The Salesforce connector offers transactions for each record when executing bulk
 
 Secure properties are utilized to store sensitive credentials such as usernames and password security tokens.
 
-HTTPS is not implemented for the API. However it can added in future for higher environments.
-
-Since the application is designed to run locally and non production, the TLS feature is not implemented.
+HTTPS/TLS is not implemented for the API. Since the application is designed to run locally and non production, the TLS feature is not implemented. However it can added in future for higher environments.
 
 The application designed to run locally and non production hence Autodiscovery feature is not implemented. Consequently, no API gateway policies have been applied, though the API specs outline the use of a JWT Authorization header for potential future integration.
 
