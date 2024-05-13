@@ -165,7 +165,8 @@ Postman Collection for API
 You can download Postman collection for API and environment from root of repository for API. 
 
 - Collection File Name - salesforce-customer-sapi.postman_collection.json
-- Environment File Name - salesforce-customer-sapi-env.postman_environment.json
+- Environment File Name - For local             - local-env-salesforce-customer-sapi.postman_environment.json
+						- For Cloudhub Sandbox  - dev-env-salesforce-customer-sapi.postman_environment.json
 
 
 Before executing any requests, please ensure that the application is running smoothly in Anypoint Studio without any errors. Afterward, you can import the Postman collection and environment into Postman for seamless testing. Additionally, make sure that the environment is correctly configured in Postman.
