@@ -6,9 +6,10 @@
 	xsi:schemaLocation="
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
 	<error-handler name="apikit-error-handler">
-		<on-error-propagate
-			type="APIKIT:BAD_REQUEST,ACCOUNT:BAD_REQUEST"
+		<on-error-continue
+			type="APIKIT:BAD_REQUEST,ACCOUNT:BAD_REQUEST,ACCOUNT:INVALID_INPUT"
 			enableNotifications="true" logException="true">
+			<logger level="ERROR" doc:name="Error" doc:id="4e7b6c0f-6748-4707-b146-812f7c6ddbd5" message="correlationId=#[correlationId] -- Error is #[error.description]. Other details  #[error.errorType] #[error.exception]" />
 			<ee:transform doc:id="4856d057-07b6-458b-811a-5dc23f4bfecb" doc:name="Return 400">
 				<ee:message>
 					<ee:set-payload resource="dataweave/error-response-bad-request.dwl" />
@@ -18,8 +19,8 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 					<ee:set-variable resource="dataweave/http-reason-phrase.dwl" variableName="httpReasonPhrase" />
 				</ee:variables>
 			</ee:transform>
-		</on-error-propagate>
-		<on-error-propagate
+		</on-error-continue>
+		<on-error-continue
 			type="APIKIT:NOT_FOUND"
 			enableNotifications="true" logException="true">
 			<ee:transform doc:name="Return 404">
@@ -32,8 +33,8 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 					<ee:set-variable resource="dataweave/http-reason-phrase.dwl" variableName="httpReasonPhrase" />
 				</ee:variables>
 			</ee:transform>
-		</on-error-propagate>
-		<on-error-propagate
+		</on-error-continue>
+		<on-error-continue
 			type="APIKIT:METHOD_NOT_ALLOWED">
 			<ee:transform doc:name="Return 405">
 				<ee:message>
@@ -45,8 +46,8 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 					<ee:set-variable resource="dataweave/http-reason-phrase.dwl" variableName="httpReasonPhrase" />
 				</ee:variables>
 			</ee:transform>
-		</on-error-propagate>
-		<on-error-propagate type="APIKIT:NOT_ACCEPTABLE">
+		</on-error-continue>
+		<on-error-continue type="APIKIT:NOT_ACCEPTABLE">
 			<ee:transform doc:name="Return 406">
 				<ee:message>
 					<ee:set-payload
@@ -57,8 +58,8 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 					<ee:set-variable resource="dataweave/http-reason-phrase.dwl" variableName="httpReasonPhrase" />
 				</ee:variables>
 			</ee:transform>
-		</on-error-propagate>
-		<on-error-propagate
+		</on-error-continue>
+		<on-error-continue
 			type="APIKIT:UNSUPPORTED_MEDIA_TYPE">
 			<ee:transform doc:name="Return 415">
 				<ee:message>
@@ -70,8 +71,8 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 					<ee:set-variable resource="dataweave/http-reason-phrase.dwl" variableName="httpReasonPhrase" />
 				</ee:variables>
 			</ee:transform>
-		</on-error-propagate>
-		<on-error-propagate type="APIKIT:NOT_IMPLEMENTED">
+		</on-error-continue>
+		<on-error-continue type="APIKIT:NOT_IMPLEMENTED">
 			<ee:transform doc:name="Return 501">
 				<ee:message>
 					<ee:set-payload
@@ -82,8 +83,8 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 					<ee:set-variable resource="dataweave/http-reason-phrase.dwl" variableName="httpReasonPhrase" />
 				</ee:variables>
 			</ee:transform>
-		</on-error-propagate>
-		<on-error-propagate type="RETRY_EXHAUSTED" enableNotifications="true" logException="true">
+		</on-error-continue>
+		<on-error-continue type="RETRY_EXHAUSTED" enableNotifications="true" logException="true">
 			<flow-ref doc:name="Alert Notification" doc:id="3e423fcf-3a96-45ff-9ed5-1e1a4fce718a" name="global-error-notification" />
 			<ee:transform doc:name="Return 500" doc:id="14cf5343-1ac8-411e-8c5f-2bbdfc25d76e">
 				<ee:message>
@@ -94,8 +95,8 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 					<ee:set-variable resource="dataweave/http-reason-phrase.dwl" variableName="httpReasonPhrase" />
 				</ee:variables>
 			</ee:transform>
-		</on-error-propagate>
-		<on-error-propagate type="ANY" enableNotifications="true" logException="true">
+		</on-error-continue>
+		<on-error-continue type="ANY" enableNotifications="true" logException="true">
 			<ee:transform doc:name="Return 500" doc:id="add3c8ee-e59e-4786-9a0c-6011842110f9">
 				<ee:message>
 					<ee:set-payload resource="dataweave/error-response-any.dwl" />
@@ -105,7 +106,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 					<ee:set-variable resource="dataweave/http-reason-phrase.dwl" variableName="httpReasonPhrase" />
 				</ee:variables>
 			</ee:transform>
-		</on-error-propagate>
+		</on-error-continue>
 	</error-handler>
 	
 	<sub-flow name="global-error-notification" doc:id="b4f70c06-20a9-43ef-a803-6af7391d9a38" >

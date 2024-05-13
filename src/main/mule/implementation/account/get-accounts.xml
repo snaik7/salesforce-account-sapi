@@ -19,10 +19,16 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 					<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="54755e0e-4d3a-4cc2-8058-ffd525f23843" type="SALESFORCE:COMMUNICATION, SALESFORCE:CONNECTIVITY, SALESFORCE:TIMEOUT, SALESFORCE:UNAVAILABLE">
 						<logger level="ERROR" doc:name="Error" doc:id="f5087436-1ffe-4361-9071-f56a24c67e6f" message="correlationId=#[correlationId] -- Error is #[error.description]. Other details  #[error.errorType] #[error.exception]" />
 					</on-error-propagate>
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="e364e599-6467-43ec-a16a-67aa175801d5" type="SALESFORCE:INVALID_INPUT">
+						<set-variable value="#[true]" doc:name="errorInput" doc:id="96c976a8-8c2c-437a-962b-ce39b5d91c84" variableName="errorInput" />
+						<set-variable value="#[error.description]" doc:name="errorDescription" doc:id="a2520479-f5f1-4314-9276-5156bcd49c93" variableName="errorDescription" />
+						<logger level="ERROR" doc:name="Error" doc:id="7f7c49b9-3772-49df-99eb-1b5afd18d742" message="correlationId=#[correlationId] -- Error is #[error.description]. Other details  #[error.errorType] #[error.exception]" />
+					</on-error-continue>
 					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="d7f1dc2c-2181-4bef-8bbf-e9f5c0a9a9e9" type="ANY">
 						<set-variable value="#[true]" doc:name="errorAny" doc:id="1c549106-069a-4b68-b4c8-49b599f38b83" variableName="errorAny" />
 						<logger level="ERROR" doc:name="Error" doc:id="1c17e313-a979-466f-8211-cc248925abbd" message="correlationId=#[correlationId] -- Error is #[error.description]. Other details  #[error.errorType] #[error.exception]" />
 					</on-error-continue>
+					
 				</error-handler>
 			</try>
 		</until-successful>
@@ -30,6 +36,9 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 		<choice doc:name="Error ?" doc:id="2e12f707-3636-4863-a7b9-4f5159538bab" >
 			<when expression="#[vars.errorAny]">
 				<raise-error doc:name="ACCOUNT:GET_ACCOUNT" doc:id="100bac82-5144-4868-a16e-a708176c6ba3" type="ACCOUNT:GET_ACCOUNT" description="#[p('errorMessage.getAccount')]"/>
+			</when>
+			<when expression="#[vars.errorInput]">
+				<raise-error doc:name="ACCOUNT:INVALID_INPUT" doc:id="11064e1f-d4bd-464f-ba8b-34b8a7216685" type="ACCOUNT:INVALID_INPUT" description="#[vars.errorDescription]"/>
 			</when>
 		</choice>
 		<ee:transform doc:name="Get Account Response" doc:id="a0f13f9d-b40c-47a2-8c99-0179975d3c84">

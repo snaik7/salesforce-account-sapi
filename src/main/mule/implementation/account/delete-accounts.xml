@@ -16,6 +16,11 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 					<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="54755e0e-4d3a-4cc2-8058-ffd525f23843" type="SALESFORCE:COMMUNICATION, SALESFORCE:CONNECTIVITY, SALESFORCE:TIMEOUT, SALESFORCE:UNAVAILABLE">
 						<logger level="ERROR" doc:name="Error" doc:id="d44f8df5-bb52-4e60-b2a5-bf1d586c15ce" message="correlationId=#[correlationId] -- Error is #[error.description]. Other details  #[error.errorType] #[error.exception]"/>
 					</on-error-propagate>
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="4f3353b5-ff64-4d79-b40a-23603a5972ed" type="SALESFORCE:INVALID_INPUT">
+						<set-variable value="#[true]" doc:name="errorInput" doc:id="11ff52a8-5a48-4813-a0f5-7d0f78b7b76b" variableName="errorInput" />
+						<set-variable value="#[error.description]" doc:name="errorDescription" doc:id="3d48763f-f1a3-42fa-bc1c-a0eae8a1608e" variableName="errorDescription" />
+						<logger level="ERROR" doc:name="Error" doc:id="d7f11bb0-12ed-47b0-af21-27d80c5ffaf7" message="correlationId=#[correlationId] -- Error is #[error.description]. Other details  #[error.errorType] #[error.exception]" />
+					</on-error-continue>
 					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="35e99b3b-7e9d-4651-8a06-88f1f0f82c7b" type="ANY">
 						<set-variable value="#[true]" doc:name="errorAny" doc:id="6c7ba5c1-041b-4a2a-82c0-cdf3400b74ee" variableName="errorAny"/>
 						<logger level="ERROR" doc:name="Error" doc:id="6ab0d608-56eb-4e2c-8bae-bc7863ba8642" message="correlationId=#[correlationId] -- Error is #[error.description]. Other details  #[error.errorType] #[error.exception]" />
@@ -26,6 +31,9 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 		<choice doc:name="Error ?" doc:id="c0d8f5fc-8a6f-4015-83a3-de679d3bb1ed" >
 			<when expression="#[vars.errorAny]">
 				<raise-error doc:name="ACCOUNT:DELETE_ACCOUNT" doc:id="5ac7ebaf-e597-4af3-9d35-30ab4019e698" type="ACCOUNT:DELETE_ACCOUNT" description="#[p('errorMessage.deleteAccount')]"/>
+			</when>
+			<when expression="#[vars.errorInput]">
+				<raise-error doc:name="ACCOUNT:INVALID_INPUT" doc:id="d90c06e8-1f4b-48b0-86e8-131d25666ec7" type="ACCOUNT:INVALID_INPUT" description="#[vars.errorDescription]"/>
 			</when>
 		</choice>
 		<ee:transform doc:name="Delete Accounts Response" doc:id="fb13b259-81cd-4da3-924a-e2ebde05507d">
