@@ -93,7 +93,7 @@ Validations are conducted within DataWeave, as it allows for multiple validation
 
 ### Error Handling
 
-Salesforce-specific errors like Salesforce Unavailable and Response Timeout are managed with retry mechanisms.
+Salesforce-specific errors like Salesforce Unavailable and Response Timeout are managed with retry mechanisms. Invalid input specific to Salesforce is also being addressed.
 Any unrecoverable errors are returned to users.
 When the Salesforce Connector encounters errors during bulk insert or update operations, we provide an error message for each record along with either a success or error message. However, the HTTP status code always indicates success, such as 201 for create operations or 200 for update operations.
 Additionally, the standard APIKit error handler is utilized to handle standard HTTP error codes like 400 and 500.
