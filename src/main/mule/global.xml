@@ -23,7 +23,7 @@ http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/sc
 	   
 	  <configuration doc:name="common-error-handler" doc:id="e7446859-9bcf-4c0e-85ac-c8105b567fad" defaultErrorHandler-ref="apikit-error-handler" />
 	  <http:listener-config name="main-http-listener" doc:name="HTTP Listener config" doc:id="84f5091b-b5e1-47f4-ba84-2df3a006051b" >
-		<http:listener-connection host="0.0.0.0" port="8081" />
+		<http:listener-connection host="${http.listener.host}" port="${http.listener.port}" readTimeout="${http.listener.readTimeout}"/>
 	</http:listener-config>
 	<salesforce:sfdc-config name="salesforce-config" doc:name="Salesforce Config" doc:id="b2d290cc-2227-4033-86a8-90fd2e693d00" readTimeoutUnit="MILLISECONDS" readTimeout="${salesforce.responseTimeout}">
 		<salesforce:basic-connection username="${secure::salesforce.username}" password="${secure::salesforce.password}" securityToken="${secure::salesforce.securityToken}" connectionTimeout="${salesforce.connectionTimeout}" connectionTimeoutUnit="MILLISECONDS" loginRequestTimeout="${salesforce.loginTimeout}" loginRequestTimeoutUnit="MILLISECONDS" objectTTL="${salesforce.objectTTL}" maxEntries="${salesforce.maxEntries}"/>
